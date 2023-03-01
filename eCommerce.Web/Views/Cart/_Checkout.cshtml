@@ -54,27 +54,27 @@
                                                    <span class="ltr-dir">
                                                        @if (cartItem.Quantity <= 5)
                                                        {
-                                                       @DiscountPrice.Priceperroll_1to5.WithCurrency() }
+                                                           @((DiscountPrice.Priceperroll_1to5 *cartItem.Quantity).WithCurrency()) }
                                                        else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
                                                        {
-                                                       @DiscountPrice.Priceperroll_6to15.WithCurrency() }
+                                                           @((DiscountPrice.Priceperroll_6to15 *cartItem.Quantity).WithCurrency()) }
                                                        else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
                                                        {
-                                                       @DiscountPrice.Priceperroll_16to23.WithCurrency() }
+                                                           @((DiscountPrice.Priceperroll_16to23 * cartItem.Quantity).WithCurrency()) }
                                                        else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
                                                        {
-                                                       @DiscountPrice.Priceperroll_24to47.WithCurrency() }
+                                                           @((DiscountPrice.Priceperroll_24to47*cartItem.Quantity).WithCurrency()) }
                                                        else if (cartItem.Quantity >= 48)
                                                        {
-                                                       @DiscountPrice.Priceperroll_48.WithCurrency()}
-                                                       </span>
+                                                           @((DiscountPrice.Priceperroll_48 * cartItem.Quantity).WithCurrency())}
+                                                   </span>
                                                        }
                                                        else
                                                        {
                                                        <span class="ltr-dir">@((productPrice * cartItem.Quantity).WithCurrency())</span>
                                                        }
-</li>
-                                    }
+                                                </li>
+                                        }
                                     @*<li class="fw-normal">
                                         Item Totals (Incl VAT)
                                         <span class="ltr-dir">@Model.TotalAmount.WithCurrency()</span>

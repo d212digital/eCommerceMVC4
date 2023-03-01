@@ -95,51 +95,90 @@
                         @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                         {
 
-                    <td class="p-price ltr-dir">
-                       <!-- commented this out as it shows strike through of product price but its not necessary-->
-                        @*<span>
-                            @product.Price.WithCurrency()
-                        </span>*@
-                        @if (cartItem.Quantity <= 5)
+                            <td class="p-price ltr-dir">
+                                <!-- commented this out as it shows strike through of product price but its not necessary-->
+                                @*<span>
+                    @product.Price.WithCurrency()
+                </span>*@
+                                @if (cartItem.Quantity <= 5)
+                                {
+                                    @DiscountPrice.Priceperroll_1to5.WithCurrency() }
+                                else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
+                                {
+                                    @DiscountPrice.Priceperroll_6to15.WithCurrency() }
+                                else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
+                                {
+                                    @DiscountPrice.Priceperroll_16to23.WithCurrency() }
+                                else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
+                                {
+                                    @DiscountPrice.Priceperroll_24to47.WithCurrency() }
+                                else if (cartItem.Quantity >= 48)
+                                {
+                                    @DiscountPrice.Priceperroll_48.WithCurrency()}
+                            </td>
+                        }
+                        else
                         {
-                    @DiscountPrice.Priceperroll_1to5.WithCurrency() }
-                                            else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
-                                            {
-                    @DiscountPrice.Priceperroll_6to15.WithCurrency() }
-                                            else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
-                                            {
-                    @DiscountPrice.Priceperroll_16to23.WithCurrency() }
-                                            else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
-                                            {
-                    @DiscountPrice.Priceperroll_24to47.WithCurrency() }
-                                            else if (cartItem.Quantity >= 48)
-                                            {
-                    @DiscountPrice.Priceperroll_48.WithCurrency()}
-                    </td>
-                }
-                else
-                {
-                    <td class="p-price ltr-dir">
-                        @if (product.Discount.HasValue && product.Discount.Value > 0)
-                        {
-                    <span>
-                        @product.Price.WithCurrency()
-                    </span>}
-                        @productPrice.WithCurrency()
-                    </td>
-                }
-                       <td class="qua-col">
+                            <td class="p-price ltr-dir">
+                                @if (product.Discount.HasValue && product.Discount.Value > 0)
+                                {
+                                    <span>
+                                        @product.Price.WithCurrency()
+                                    </span>}
+                                @productPrice.WithCurrency()
+                            </td>
+                        }
+                        <td class="qua-col">
                             <div class="quantity itemCartHolder">
                                 <div class="pro-qty">
                                     <span class="qtybtn dec">-</span>
                                     <input name="@string.Format("product_{0}", product.ID)" class="qtytxt" type="text" value="@cartItem.Quantity">
-                                    <span class="qtybtn inc">+</span>     
+                                    <span class="qtybtn inc">+</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="total-price ltr-dir">                        
+
+                        @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
+                        {
+
+                            <td class="total-price ltr-dir">
+             
+                                @if (cartItem.Quantity <= 5)
+                                {
+                                    @((DiscountPrice.Priceperroll_1to5 *cartItem.Quantity).WithCurrency()) }
+                                else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
+                                {
+                                    @((DiscountPrice.Priceperroll_6to15 *cartItem.Quantity).WithCurrency()) }
+                                else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
+                                {
+                                    @((DiscountPrice.Priceperroll_16to23 * cartItem.Quantity).WithCurrency()) }
+                                else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
+                                {
+                                    @((DiscountPrice.Priceperroll_24to47*cartItem.Quantity).WithCurrency()) }
+                                else if (cartItem.Quantity >= 48)
+                                {
+                                    @((DiscountPrice.Priceperroll_48 * cartItem.Quantity).WithCurrency()) }
+                            </td>
+                        }
+                        else
+                        {
+                    <td class="total-price ltr-dir">
+                        @if (product.Discount.HasValue && product.Discount.Value > 0)
+                        {
+                            <span>
+                                @((product.Price * cartItem.Quantity).WithCurrency())
+                            </span>}
+                        @((productPrice * cartItem.Quantity).WithCurrency())
+                    </td>
+                        }
+
+                        @*<td class="total-price ltr-dir">
+
                             @((productPrice * cartItem.Quantity).WithCurrency())
-                        </td>
+
+
+
+                        </td>*@
 
                         <td class="close-td">
                             <i class="btnRemoveFromCart fas fa-times" title="@("PP.Cart.RemoveItem".LocalizedString())"></i>
