@@ -87,7 +87,8 @@
                                 </h5>
                                 @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                                 {
-                                    <h6>@DiscountPrice.Centrefoldedwidth / @DiscountPrice.Fullwidth </h6>
+                                    <h6>@DiscountPrice.Fullwidth mm / @DiscountPrice.Centrefoldedwidth mm</h6>
+                                    <h6>@DiscountPrice.Rolllength mtrs</h6>
                                 }
                             </a>
                         </td>
@@ -133,7 +134,7 @@
                                 <div class="pro-qty">
                                     <span class="qtybtn dec">-</span>
                                     <input name="@string.Format("product_{0}", product.ID)" class="qtytxt" type="text" value="@cartItem.Quantity">
-                                    <span class="qtybtn inc">+</span>
+                                    <span class="qtybtn inc">+</span>     
                                 </div>
                             </div>
                         </td>

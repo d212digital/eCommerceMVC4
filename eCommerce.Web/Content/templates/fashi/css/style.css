@@ -2655,12 +2655,12 @@ ol {
     border-top: none !important;
     vertical-align: middle;
     padding: 9px 15px;
-    color: #b2b2b2;
+    color: #00162c;
 }
 
     .grouped tbody tr td .pro-qty .qtybtn {
         font-size: 30px;
-        color: #b2b2b2;
+        color: #00162c;
         font-weight: 700;
         float: left;
         line-height: 36px;

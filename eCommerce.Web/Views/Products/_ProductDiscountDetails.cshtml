@@ -5,12 +5,12 @@
     <table class="table table-bordered grouped mt-1" id="Dicounttable">
         <thead>
             <tr>
-                <th class="item" scope="col" rowspan="2">Reel Width</th>
-                <th class="item" scope="col" rowspan="2">Open Width</th>
-                <th class="item" scope="col" rowspan="2">Length</th>
+                <th class="item" scope="col" rowspan="2">Reel Width <br />(mm)</th>
+                <th class="item" scope="col" rowspan="2">Open Width <br />(mm)</th>
+                <th class="item" scope="col" rowspan="2">Length <br />(mtrs)</th>
                 <th class="item" scope="col" colspan="5" style="text-align: center">Price per reel</th>
                 <th class="qty" scope="col" rowspan="2">Qty</th>
-                <th class="item_subtotal" style="display:none" scope="col" rowspan="2">Sub total</th>
+                <th class="item_subtotal Bold" style="display:none" scope="col" rowspan="2">Sub total</th>
                 <th class="item_action"  style="display:none" scope="col" rowspan="2">Action</th>
             </tr>
             <tr>
@@ -25,10 +25,9 @@
             @foreach (var discountdetail in Model)
             {
                 <tr id="@discountdetail.ID">
-
-                    <td id="fullWidth">@discountdetail.Fullwidth</td>
-                    <td id="centerfoldedWidth">@discountdetail.Centrefoldedwidth</td>
-                    <td>@discountdetail.Rolllength</td>
+                    <td id="fullWidth" class="text-center">@discountdetail.Fullwidth</td>
+                    <td id="centerfoldedWidth" class="text-center">@discountdetail.Centrefoldedwidth</td>
+                    <td class="text-center">@discountdetail.Rolllength</td>
                     <td>£ <span class="priceperroll_1">@discountdetail.Priceperroll_1to5</span></td>
                     <td>£ <span class="priceperroll_6">@discountdetail.Priceperroll_6to15</span></td>
                     <td>£ <span class="priceperroll_16">@discountdetail.Priceperroll_16to23</span></td>

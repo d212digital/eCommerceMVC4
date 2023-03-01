@@ -45,7 +45,7 @@
                     {
                         var currentLanguageParentCategoryRecord = Model.Product.Category.ParentCategory.CategoryRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
 
-    <a href="@Url.SearchProducts(category: Model.Product.Category.ParentCategory.SanitizedName)">@(currentLanguageParentCategoryRecord != null ? currentLanguageParentCategoryRecord.Name : string.Empty)</a>}
+                    <a href="@Url.SearchProducts(category: Model.Product.Category.ParentCategory.SanitizedName)">@(currentLanguageParentCategoryRecord != null ? currentLanguageParentCategoryRecord.Name : string.Empty)</a>}
                     <a href="@Url.SearchProducts(category: Model.Product.Category.SanitizedName)">@(currentLanguageCategoryRecord != null ? currentLanguageCategoryRecord.Name : string.Empty)</a>
                     <span>@(currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty)</span>
                 </div>
@@ -83,7 +83,9 @@
                             var active = productPicture == firstProductPicture ? "active" : string.Empty;
 
     <div class="carousel-item @active text-center">
-        @Html.PictureWithZoomAttribute(productPicture.Picture, "", alt: currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty, id: string.Format("imgZoom{0}", j))
+    @Html.Picture(productPicture.Picture)
+                 
+        @*@Html.PictureWithZoomAttribute(productPicture.Picture, "", alt: currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty, id: string.Format("imgZoom{0}", j))*@
     </div>}
                     </div>
                     @if (Model.Product.ProductPictures.Count > 1)
@@ -135,23 +137,36 @@
                                         <p>
                                             @(currentLanguageProductRecord != null ? currentLanguageProductRecord.Summary : string.Empty)
                                         </p>
-                                        <h4 title="Price" class="ltr-dir">
-                                            @if (Model.Product.Discount.HasValue && Model.Product.Discount.Value > 0)
-                                            {
-                                <span>
-                                    @Model.Product.Price.WithCurrency()
-                                </span>}
 
-                                            @productPrice.WithCurrency()
-                                        </h4>
+                                        @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
+                                        {
+
+                                            <h4 title="Price" class="ltr-dir">
+                                              Prices From: @productPrice.WithCurrency()
+                                            </h4>
+                                            <h5 title="Price" class="ltr-dir p-2">
+                                                > See the table below for discounts and films sizes<br />
+                                                > You can change quantites and select your required film size<br />
+                                                > Discounts shown will be applied automatically
+                                            </h5>
+                                        }
+                                        else
+
+                                        {
+                                            <h4 title="Price" class="ltr-dir">
+                                                @productPrice.WithCurrency()
+                                            </h4>
+
+                                        }
                                     </div>
                                     @if (Model.Product.IsActive)
                                     {
                                 <div class="my-2">
                                     @if (Model.Product.StockQuantity > 0)
                                     {
-                                <strong class="p-code @productStockTextColor">
-                                    @("PP.ProductDetails.ProductStockQuantity".LocalizedString().Replace("{quantity}", Model.Product.StockQuantity.ToString()))
+                                <strong class="p-code pb-2 @productStockTextColor">
+                                    In stock - order before 2pm for next day delivery
+                                   @* @("PP.ProductDetails.ProductStockQuantity".LocalizedString().Replace("{quantity}", Model.Product.StockQuantity.ToString()))*@
                                 </strong> }
                             else
                             {
