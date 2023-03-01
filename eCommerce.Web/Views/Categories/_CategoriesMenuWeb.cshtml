@@ -1,0 +1,25 @@
+﻿@model CategoriesMenuViewModel
+
+
+@if (Model != null && Model.CategoryWithChildrens != null && Model.CategoryWithChildrens.Count > 0)
+{
+
+            
+            <nav class="nav-menu mobile-menu">
+                <ul>
+                    @foreach (var categoryWithChildren in Model.CategoryWithChildrens.Take(6))
+                    {
+                        var category = categoryWithChildren.Category;
+
+                        var currentLanguageCategoryRecord = category.CategoryRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
+                        <li>
+                            <a href="@Url.SearchWebProducts(category.SanitizedName)">
+                                @(currentLanguageCategoryRecord != null ? currentLanguageCategoryRecord.Name : string.Empty)
+                            </a>
+                        </li>
+
+                    }                  
+ 
+                </ul>                   
+            </nav>                    
+}

@@ -1,0 +1,58 @@
+﻿@model eCommerce.Web.ViewModels.PageViewModel
+
+@{
+    //Model.PageTitle = "PP.Register.Title".LocalizedString();
+    //Model.PageDescription = "PP.Register.Description".LocalizedString().Replace("{application}", ConfigurationsHelper.ApplicationName);
+    Model.PageTitle = "How to Order";
+    Model.PageURL = Url.StaticPage("HowToOrder");
+    Model.PageImageURL = PictureHelper.PageImageURL("about.jpg");
+}
+
+<div class="register-login-section spad">
+    <div class="container" id="register-container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="login-form page-content-holder">
+                    <div class="page-content-header">
+                        <h2>@Model.PageTitle</h2>
+                    </div>
+                    <section class="section-margin--small">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col col-12">
+                                    <p>Follow our simple process for placing your order with Shrink Wrapping Supplies.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <hr />
+
+                    <div class="text-black-50">STEP 1.</div>
+                    <ul class="ml-5">
+                        <li>Click on the product that you are interested in.</li>
+                        <li>Choose any options of the product, such as film sizes and quantities.</li>
+                        <li>You can also change the size of the product (if available) by clicking on the selected thumbnail.</li>
+                        <li>Click “ADD TO ORDER” button on the right.</li>
+                        <li>Now you can continue adding items or check your order contents, by clicking on the shopping basket icon in the upper right-hand corner.</li>
+                    </ul>
+                    <div class="text-black-50">STEP 2</div>
+                    <ul class="ml-5">
+                        <li>In the shopping cart’s preview you can see a list of the products you have chosen, together with their quantity and price.</li>
+                        <li>If you want to remove a product from your order, click on the "x" on the right side of the price.</li>
+                        <li>If you want to change the quantity, click on +/- button next to the quantity and wait for a moment. In a short while, your order automatically update.</li>
+                        <li> To continue, click “PROCEED TO PAYMENT”.</li>
+                    </ul>
+                    <div class="text-black-50">STEP 3</div>
+                    <ul class="ml-5">
+                        <li>If you are registered with us, please login to get your details.(account addresses only, no payment information is stored with us)</li>
+                        <li>If not you can register for an account for fast checkout in the future</li>
+                        <li>Enter your delivery details.</li>
+                        <li>Select a payment option and follow the instructions on screen.</li>
+                        <li>Place your order, sit back and relax, we'll do the rest.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

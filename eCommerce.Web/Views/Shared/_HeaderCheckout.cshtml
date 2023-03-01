@@ -1,0 +1,91 @@
+﻿@using Microsoft.AspNet.Identity
+
+<header class="header-section mt-2">    
+    <div class="header-top">
+        <nav role="navigation">
+            <div id="menuToggle">
+                <!--
+        A fake / hidden checkbox is used as click reciever,
+        so you can use the :checked selector on it.
+        -->
+                <input type="checkbox" />
+
+                <!--
+        Some spans to act as a hamburger.
+
+        They are acting like a real hamburger,
+        not that McDonalds stuff.
+        -->
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <!--
+        Too bad the menu has to be inside of the button
+        but hey, it's pure CSS magic.
+        -->
+                <ul id="menu">
+                    <li class="@Html.MenuItemClass("Home", "Search")"><a href="@Url.SearchProducts()">@("PP.Header.Menu.Products".Localized())</a></li>
+                    <li class="@Html.MenuItemClass("Orders", "Tracking")"><a href="@Url.OrderTrack()">@("PP.Header.Menu.Tracking".Localized())</a></li>
+                    <li><a href="@Url.UserProfile(tab: "")">@("PP.Footer.Account.MyProfile".Localized())</a></li>
+                    <li><a href="@Url.StaticPage("HowToOrder")">@("PP.Header.Information.HowToOrder".Localized())</a></li>
+                    <li><a href="@Url.StaticPage("ContactUs")">@("PP.Footer.Information.ContactUs".Localized())</a></li>
+                    <li><a href="/web">Main Website</a></li>
+                </ul>
+            </div> 
+           
+        </nav>
+        <div class="container">
+            <div class="ht-left">
+               
+            <div class="phone-service mt-0 text-center">            
+              
+            </div>
+                
+            </div>
+            @if (AppDataHelper.IsMobile && !string.IsNullOrEmpty(ConfigurationsHelper.PhoneNumber))
+            {
+                <div class="d-sm-block d-md-none" style="display:inline-block; margin-top: 2px">
+                    <div class="phone-service">
+                        <i class="fas fa-phone" style="line-height: inherit"></i>
+                        <a class="text-dark" href="tell:@ConfigurationsHelper.PhoneNumber" target="_blank">
+                            @ConfigurationsHelper.PhoneNumber.SafeSubstring(8)
+                        </a>
+                    </div>
+                </div>
+            }       
+        <div class="col-12 ml-lg-5 pl-5 mb-3 mt-2">
+            <a href="@Url.Home()">
+                <img src="~/Content/images/site/logo-os.png" />
+            </a>
+        </div>
+        </div>
+    </div>
+    @if (!LanguagesHelper.LanguagesWithResources.Contains(AppDataHelper.CurrentLanguage) && ConfigurationsHelper.Environment == Environments.DEMO)
+    {
+        <div class="text-center alert alert-danger rounded-0 mb-0" role="alert" dir="ltr">
+            Language text resources are missing for selected language. Please upload Language Pack for this language. See more details <u><a href="#" target="_blank">here <i class="fas fa-external-link-alt mx-1 dont-transform"></i></a></u>.
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    
+</header>
+
+<div style="display:none">
+    @{ Html.RenderAction("CategoriesMenuForMobile", "Categories"); }
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form id="logOffForm" method="post" action="@Url.Logoff()">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <script>
+        $("#btnLogOff").click(function () {
+            $("#logOffForm").submit();
+        });
+    </script>
+}

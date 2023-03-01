@@ -1,0 +1,338 @@
+﻿@model eCommerce.Web.Areas.Dashboard.ViewModels.DashboardViewModel
+
+<!--Start Dashboard Content -->
+<div class="row ml-1 mb-2">
+    <h2>Dashboard</h2>
+</div>
+
+<!-- Content Row -->
+<div class="row">
+
+    <!-- Sales (Monthly) Card  -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Sales (Current Month)
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">£40,000</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sales (YTD) Card  -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Sales (Year to Date)
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">£215,000</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-pound-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders MTD Card  -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                @("Dashboard.Dashboard.TotalOrdersMtd".Localized())
+                            </div>
+                            <a class="card-body-heading-anchor" href="@Url.ListAction("Orders")">
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    @Model.OrdersCount
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Orders Card  -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            @("Dashboard.Dashboard.TotalOrders".Localized())
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Row -->
+
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Sales Overview</h6>
+                @*<div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                         aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>*@
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <!--<div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">-->
+            <!-- Card Header - Dropdown -->
+            <!--<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                         aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>-->
+            <!-- Card Body -->
+            <!--<div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="myPieChart"></canvas>
+                </div>
+                <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-primary"></i> Direct
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-success"></i> Social
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-info"></i> Referral
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</div>
+
+<div>
+    <div>
+        @if (Model.ProductsWithLessStockQuantity != null && Model.ProductsWithLessStockQuantity.Count > 0)
+        {
+            foreach (var product in Model.ProductsWithLessStockQuantity)
+            {
+                var currentLanguageProductRecord = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
+
+                <div class="alert alert-warning mt-2" role="alert">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    @Html.Raw("Dashboard.Dashboard.LowStockAlert".Localized().ToString().Replace("{product-link}", @"<a href=""" + Url.ProductDetails(product.Category.SanitizedName, product.ID) + "\" target=\"_blank\">" + (currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Format("Product with ID {0}", product.ID)) + "</a>").Replace("{product-quantity}", product.StockQuantity.ToString()).Replace("{stock-alert-level}", "5"))
+                </div>
+            }
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            @("Dashboard.Dashboard.TotalProducts".Localized())
+                        </div>
+                        <a class="card-body-heading-anchor" href="@Url.ListAction("Products")">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.ProductsCount
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-cubes fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-secondary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            @("Dashboard.Dashboard.TotalCategories".Localized())
+                        </div>
+                        <a class="card-body-heading-anchor" href="@Url.ListAction("Categories")">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.CategoriesCount
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-sitemap fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            @("Dashboard.Dashboard.TotalOrders".Localized())
+                        </div>
+                        <a class="card-body-heading-anchor" href="@Url.ListAction("Orders")">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.OrdersCount
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-funnel-dollar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            @("Dashboard.Dashboard.TotalComments".Localized())
+                        </div>
+                        <a class="card-body-heading-anchor" href="@Url.ListAction("Comments")">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.CommentsCount
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            @("Dashboard.Dashboard.NoOfUsers".Localized())
+                        </div>
+                        <a class="card-body-heading-anchor" href="@Url.ListAction("Users")">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.UserCount
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            @("Dashboard.Dashboard.NoOfRoles".Localized())
+                        </div>
+                        <a class="card-body-heading-anchor" href="@Url.ListAction("Roles")">
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                @Model.RolesCount
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users-cog fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a class="weatherwidget-io mb-4" href="https://forecast7.com/en/53d48n2d24/manchester/" data-label_1="MANCHESTER" data-label_2="WEATHER" data-font="Open Sans" data-theme="clear">MANCHESTER WEATHER</a>
+<script>
+    !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+</script>
+
+<hr />
+<!-- Page level plugins -->
+<script src="~/Content/templates/sbadmin2/vendor/chart.js/Chart.min.js"></script>
+<script src="~/Content/templates/sbadmin2/js/sb-admin-2.min.js"></script>
+
+<!-- Bootstrap core JavaScript-->
+
+<script src="~/Content/templates/sbadmin2/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="~/Content/templates/sbadmin2/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="~/Content/templates/sbadmin2/js/demo/chart-pie-demo.js"></script>
+<script src="~/Content/templates/sbadmin2/js/demo/chart-area-demo.js"></script>

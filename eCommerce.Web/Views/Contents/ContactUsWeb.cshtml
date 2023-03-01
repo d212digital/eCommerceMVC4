@@ -1,0 +1,196 @@
+﻿@model eCommerce.Web.ViewModels.PageViewModel
+@{
+
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+@{
+    //Model.PageTitle = "PP.Register.Title".LocalizedString();
+    //Model.PageDescription = "PP.Register.Description".LocalizedString().Replace("{application}", ConfigurationsHelper.ApplicationName);
+    Model.PageTitle = "Contact Us";
+    Model.PageURL = Url.StaticPage("ContactUsWeb");
+    Model.PageImageURL = PictureHelper.PageImageURL("contact-us.jpg");
+}
+<!-- ========================= contact-section start ========================= -->
+<section id="contact" class="contact-section">
+    <div class="container" id="register-container">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="contact-item-wrapper">
+                    <div class="row mt-5">
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="lni lni-phone"></i>
+                                </div>
+                                <div class="contact-content">
+                                    <h4>Contact</h4>
+                                    <p>0161 366 5552</p>
+                                    <p>Office opening hours: </p>
+                                    <p>Monday - Friday 9am - 5pm</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="lni lni-map-marker"></i>
+                                </div>
+                                <div class="contact-content">
+                                    <h4>Address</h4>
+                                    <p>Unit 4a Arrow Trading Estate</p>
+                                    <p>Manchester M34 5LR</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-12">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="lni lni-cart-full"></i>
+                                </div>
+                                <div class="contact-content">
+                                    <h4>Online Shop</h4>
+                                    <p class="mb-1">Open 24 Hours / 7 Days a week</p>
+                                    <p><a href="/en">Visit our Online Shop</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8 mt-5">
+                <div class="contact-form-wrapper">
+                    <div class="row">
+                        <div class="col-xl-10 col-lg-8 mx-auto">
+                            <div class="section-title text-center">
+                                <span> Get in Touch </span>
+                                <h2>
+                                    Ready to Get Started
+                                </h2>
+                                <p>
+                                    Drop us a line and we'll call you right back to discuss your new project, or if you're in need of some technical assistance, don't hesitate
+                                    to give us a call on the number to your left.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="contact-form" class="contact-form">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" id="name" name="name" placeholder="Enter Your Name" required="required" />
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" id="email" name="email" placeholder="Enter Your Email" required="required" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            @*<div class="col-md-6">
+                                    <input type="text" name="phone" id="phone" placeholder="Phone" required />
+                                </div>*@
+                            <div class="col-md-12">
+                                <input type="text" id="subject" name="subject" placeholder="Enter Subject" required="required" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <textarea name="message" id="message" placeholder="Type Message" required="required" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="button text-center rounded-buttons">
+                                    <button type="submit" id="btnContactUs" class="btn primary-btn rounded-full">
+                                        Send Message
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="errorsRow" style="display:none">
+                                    <div class="alert alert-danger errorMessages mt-2 mb-0" role="alert"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="successRow" style="display:none">
+                                    <div class="alert alert-success successMessages mt-2 mb-0" role="alert"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================= contact-section end ========================= -->
+
+<!-- ========================= map-section start ========================= -->
+<section class="map-section map-style-9">
+    <div class="map-container">
+        <object style="border:0; height: 500px; width: 100%;"
+                data="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2375.3248794069773!2d-2.1235315365191907!3d53.462653701759784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487bb6017006d3ab%3A0xc7321f8d1aa8f29f!2sShrink%20Wrapping%20Supplies!5e0!3m2!1sen!2suk!4v1637756714348!5m2!1sen!2suk"></object>
+    </div>
+
+</section>
+<!-- ========================= map-section end ========================= -->
+
+<script>
+    var _contactFormSubjectRequired = "Please write your message subject.";
+    var _contactFormNameRequired = "Please write your name.";
+    var _contactFormEmailRequired = "Please write your name.";
+    var _contactFormEmailFormat = "Please write a valid email address.";
+    var _contactFormMessageRequired = "Please write your message.";
+
+    $(document).ready(function () {
+        validateContactUsForm();
+
+        $("#contact-form").submit(function (e) {
+            submitContactUsForm();
+
+            e.preventDefault();
+        });
+
+        function submitContactUsForm() {
+            $(".errorsRow .errorMessages", "#contact-form").html("");
+            $(".errorsRow", "#contact-form").hide(200);
+            $(".errorsRow .errorMessages", "#contact-form").hide();
+            $(".successRow .successMessages", "#contact-form").html("");
+            $(".successRow", "#contact-form").hide(200);
+            $(".successRow .successMessages", "#contact-form").hide();
+
+            if ($("#contact-form").valid()) {
+                addLoader("contact-form");
+
+                $.ajax({
+                    url: "@Url.SubmitContactForm()",
+                    type: "post",
+                    data: $("#contact-form").serialize(),
+                })
+                .done(function (response) {
+                    removeLoader("contact-form");
+
+                    if (response != null && response.Success) {
+                        $(".successRow .successMessages", "#contact-form").html(response.Message);
+                        $(".successRow", "#contact-form").show(200);
+                        $(".successRow .successMessages", "#contact-form").show();
+                    }
+                    else {
+                        $(".errorsRow .errorMessages", "#contact-form").html(response.Message);
+                        $(".errorsRow", "#contact-form").show(200);
+                        $(".errorsRow .errorMessages", "#contact-form").show();
+                    }
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    removeLoader("contact-form");
+
+                    Swal.fire("@("PP.Message.Error".Localized())", "@("PP.Message.GenericErrorMessage".Localized())", "error");
+
+                    console.log('jqXHR:' + jqXHR);
+                    console.log('textStatus:' + textStatus);
+                    console.log('errorThrown:' + errorThrown);
+                });
+            }
+        }
+    });
+</script>

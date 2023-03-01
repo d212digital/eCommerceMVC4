@@ -1,0 +1,43 @@
+﻿@model PageViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+@{
+    if (Model != null)
+    {
+        Model.PageTitle = "PP.Home.Title".LocalizedString();
+        Model.PageDescription = "PP.Home.Description".LocalizedString();
+        Model.PageURL = Url.Home();
+
+    }
+
+    <img src="~/Content/images/site/banner-2.png" />
+
+    //Html.RenderAction("HomeSliders", "Home");
+
+}
+<hr class="mb-4" />
+
+<div class="container mb-4">
+    <div class="row col-lg-12">
+        <p class="text-center">
+            Welcome to Shrink Wrapping Supplies <br />
+            We’ve been supplying shrink wrap machines and shrink films since 1985.
+            We’ve been innovative, environmentally friendly, and award winning in shrink wrapping, pallet wrapping, packaging solutions and shrink films for over 35 years.
+            With expertise across multiple business sectors, we’ll exceed your expectations with intelligent, tailored solutions.
+
+        </p>
+    </div>
+</div>
+<!---Start top row for categories -->
+@{ Html.RenderAction("CategoriesHomeIsLead", "Categories"); }
+
+
+
+
+
+
+
+

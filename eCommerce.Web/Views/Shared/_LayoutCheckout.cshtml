@@ -1,0 +1,33 @@
+﻿@model eCommerce.Web.ViewModels.PageViewModel
+@{
+	var baseModel = Model;
+
+	if (baseModel == null)
+	{
+		baseModel = new eCommerce.Web.ViewModels.PageViewModel();
+	}
+}
+
+<!DOCTYPE html>
+<html lang="@AppDataHelper.CurrentLanguage.ShortCode.ToLower()" @(AppDataHelper.IsRTL ? "dir=rtl" : string.Empty)>
+<head>
+    @Html.Partial("_MetaTags", baseModel)
+    @Html.Partial("_HeaderStylesScripts")
+    @RenderSection("IncludeHeaderStylesScripts", false)
+</head>
+<body>
+    <div id="">
+        <div class=""></div>
+    </div>
+
+    @Html.Partial("_HeaderCheckout")
+    
+    @RenderBody()
+
+    @Html.Partial("_FooterCheckout")
+    @Html.Partial("_Variables")
+    @Html.Partial("_FooterStylesScripts")
+    @RenderSection("IncludeFooterStyleScripts", false)
+</body>
+</html>
+

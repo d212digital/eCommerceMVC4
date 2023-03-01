@@ -1,0 +1,127 @@
+﻿<!-- Start Footer Area -->
+<footer class="footer-area footer-eleven">
+    <hr class="text-muted mb-5" />
+    <!-- Start Footer Top -->
+    <div class="footer-top">
+        <div class="container">
+            <div class="inner-content">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="footer-widget f-about">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="~/Content/templates/sws-frontend/assets/images/logo2.png" alt="#" class="img-fluid" />
+                                </a>
+                            </div>
+                            <p>
+                                We are dedicated to providing a high
+                                quality machine, film and consumables service at competitive prices.
+                                Total reliability since 1985.
+                            </p>
+                            <p class="copyright-text text-muted small">
+                                <span>© 2022 Shrink Wrapping Supplies.</span>Designed and Developed by
+                                <a href="javascript:void(0)" rel="nofollow"> BlueMoon Software </a>
+                            </p>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="footer-widget f-link">
+                            <h5>@("PP.Footer.Information".Localized())</h5>
+                            <ul>
+                                <li><a href="/en">Online Shop</a></li>
+                                <li><a href="@Url.StaticPage("AboutUs")">@("PP.Footer.Information.AboutUs".Localized())</a></li>
+                                <li><a href="/web/contact-us-web">Contact Us</a></li>
+                                <li><a href="@Url.StaticPage("PrivacyPolicy")">@("PP.Footer.Information.PrivacyPolicy".Localized())</a></li>
+
+                            </ul>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="footer-widget f-link">
+                            <h5>Support</h5>
+                            <ul>
+                                <li><a href="javascript:void(0)">Servicing</a></li>
+                                <li><a href="javascript:void(0)">Breakdowns</a></li>
+                                <li><a href="javascript:void(0)">Demos</a></li>
+                                <li><a href="javascript:void(0)">Tech Support</a></li>
+                            </ul>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="footer-widget newsletter">
+                            <h5>Subscribe</h5>
+                            <p>Subscribe to our newsletter for the latest updates</p>
+                            <form action="#" method="get" target="_blank" class="newsletter-form">
+                                <input name="EMAIL" placeholder="Email address" required="required" type="email" />
+                                <div class="button">
+                                    <button class="sub-btn">
+                                        <i class="lni lni-envelope"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ End Footer Top -->
+
+</footer>
+<!--/ End Footer Area -->
+
+<a href="#" class="scroll-top btn-hover">
+    <i class="lni lni-chevron-up"></i>
+</a>
+
+<script>
+
+    //===== close navbar-collapse when a  clicked
+    let navbarTogglerNine = document.querySelector(
+        ".navbar-nine .navbar-toggler"
+    );
+    navbarTogglerNine.addEventListener("click", function () {
+        navbarTogglerNine.classList.toggle("active");
+    });
+
+    // ==== left sidebar toggle
+    let sidebarLeft = document.querySelector(".sidebar-left");
+    let overlayLeft = document.querySelector(".overlay-left");
+    let sidebarClose = document.querySelector(".sidebar-close .close");
+
+    overlayLeft.addEventListener("click", function () {
+        sidebarLeft.classList.toggle("open");
+        overlayLeft.classList.toggle("open");
+    });
+    sidebarClose.addEventListener("click", function () {
+        sidebarLeft.classList.remove("open");
+        overlayLeft.classList.remove("open");
+    });
+
+    // ===== navbar nine sideMenu
+    let sideMenuLeftNine = document.querySelector(".navbar-nine .menu-bar");
+
+    sideMenuLeftNine.addEventListener("click", function () {
+        sidebarLeft.classList.add("open");
+        overlayLeft.classList.add("open");
+    });
+
+</script>
+<!-- Cookie Consent by https://www.FreePrivacyPolicy.com -->
+<script type="text/javascript" src="//www.freeprivacypolicy.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+    document.addEventListener('DOMContentLoaded', function () {
+        cookieconsent.run({ "notice_banner_type": "simple", "consent_type": "express", "palette": "light", "language": "en", "page_load_consent_levels": ["strictly-necessary"], "notice_banner_reject_button_hide": false, "preferences_center_close_button_hide": false, "website_name": "Shrink Wrapping Supplies" });
+    });
+</script>
+
+<noscript>Cookie Consent by <a href="https://www.freeprivacypolicy.com/free-privacy-policy-generator/" rel="nofollow noopener">Free Privacy Policy website</a></noscript>
+<!-- End Cookie Consent -->

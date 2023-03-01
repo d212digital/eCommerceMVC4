@@ -1,0 +1,36 @@
+﻿@model eCommerce.Web.ViewModels.PageViewModel
+@{
+	var baseModel = Model;
+
+	if (baseModel == null)
+	{
+		baseModel = new eCommerce.Web.ViewModels.PageViewModel();
+	}
+}
+
+<!DOCTYPE html>
+<html lang="@AppDataHelper.CurrentLanguage.ShortCode.ToLower()" @(AppDataHelper.IsRTL ? "dir=rtl" : string.Empty)>
+<head>
+    @Html.Partial("_MetaTags", baseModel)
+    @Html.Partial("_WebHeaderStylesScripts")
+    @RenderSection("IncludeHeaderStylesScripts", false)
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+    <div id="">
+        <div class=""></div>
+    </div>
+
+    @Html.Partial("_WebHeaderIndex")
+    
+    @RenderBody()
+
+    @Html.Partial("_WebFooter")
+    @Html.Partial("_Variables")
+    @Html.Partial("_WebFooterStylesScripts")
+    @RenderSection("IncludeFooterStyleScripts", false)
+</div>
+</body>
+</html>
+

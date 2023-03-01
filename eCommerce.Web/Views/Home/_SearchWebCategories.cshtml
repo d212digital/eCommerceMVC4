@@ -1,0 +1,33 @@
+﻿@using eCommerce.Entities
+@using eCommerce.Shared
+@model eCommerce.Web.ViewModels.ProductsViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<section class="services-area services-eight">    
+    <!--======  Start Section Title Five ======-->
+    <div class="section-title-five">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content mt-5">
+                        <a href="/contact-us-web"><h6>Start a Conversation With Our Sales Team Here</h6></a>
+                        <h2 class="fw-bold">Here is our current range </h2>
+                        <p>
+                            Select an item below to find out more and make any sales enquiries.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!--======  End Section Title Five ======-->
+    <!--==== CategoriesSubMenuWeb.cshtml for logic ===== -->
+     @{ Html.RenderAction("CategoriesSubMenuWeb", "Categories"); }
+
+</section>

@@ -1,0 +1,53 @@
+﻿@model CategoriesMenuViewModel
+
+
+@if (Model != null && Model.CategoryWithChildrens != null && Model.CategoryWithChildrens.Count > 0)
+{
+
+    <div class="container">
+        <div class="row col-lg-12">
+            <div class="row">
+                @foreach (var categoryWithChildren in Model.CategoryWithChildrens)
+                {
+                    var category = categoryWithChildren.Category;
+
+                    var currentLanguageCategoryRecord = category.CategoryRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
+                    if (categoryWithChildren.Children != null && categoryWithChildren.Children.Count > 0)
+                    {
+
+                        foreach (var childCategory in categoryWithChildren.Children)
+                        {
+                            var currentLanguageChildCategoryRecord = childCategory.CategoryRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
+                            <div class="col-lg-4 col-md-6">
+                                <div class="single-services">
+                                    <a href="@Url.SearchWebProducts(category.SanitizedName)">
+                                        <div class="single-banner d-flex align-items-center">
+                                            @Html.Picture(picture:  category.Picture, defaultPic: "site/default-bg.jpg", alt: currentLanguageCategoryRecord != null ? currentLanguageCategoryRecord.Name : string.Empty)
+                                        </div>
+                                    </a>                                                                   
+                                    <div class="service-content">
+                                        <h4>
+                                            <a href="@Url.SearchWebProducts(category.SanitizedName)">
+                                                @(currentLanguageCategoryRecord != null ? currentLanguageCategoryRecord.Name : string.Empty)
+                                            </a>
+                                        </h4>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, adipscing elitr, sed diam nonumy
+                                            eirmod tempor ividunt labor dolore magna.
+                                        </p>
+                                        <div class="btn primary-btn rounded-full mt-4 center mb-3">
+                                            <a href="@Url.SearchWebProducts(category.SanitizedName)">
+                                                <span class="text-white">View Details</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div> 
+        </div>
+    </div>
+}
+

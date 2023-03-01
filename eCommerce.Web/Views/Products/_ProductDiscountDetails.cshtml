@@ -1,0 +1,265 @@
+﻿@model  List<ProductDiscountDetails>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table table-bordered grouped mt-1" id="Dicounttable">
+        <thead>
+            <tr>
+                <th class="item" scope="col" rowspan="2">Reel Width</th>
+                <th class="item" scope="col" rowspan="2">Open Width</th>
+                <th class="item" scope="col" rowspan="2">Length</th>
+                <th class="item" scope="col" colspan="5" style="text-align: center">Price per reel</th>
+                <th class="qty" scope="col" rowspan="2">Qty</th>
+                <th class="item_subtotal" style="display:none" scope="col" rowspan="2">Sub total</th>
+                <th class="item_action"  style="display:none" scope="col" rowspan="2">Action</th>
+            </tr>
+            <tr>
+                <th class="item" scope="col">1-5</th>
+                <th class="item" scope="col">6-15</th>
+                <th class="item" scope="col">16-23</th>
+                <th class="item" scope="col">24-47</th>
+                <th class="item" scope="col">48+</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var discountdetail in Model)
+            {
+                <tr id="@discountdetail.ID">
+
+                    <td id="fullWidth">@discountdetail.Fullwidth</td>
+                    <td id="centerfoldedWidth">@discountdetail.Centrefoldedwidth</td>
+                    <td>@discountdetail.Rolllength</td>
+                    <td>£ <span class="priceperroll_1">@discountdetail.Priceperroll_1to5</span></td>
+                    <td>£ <span class="priceperroll_6">@discountdetail.Priceperroll_6to15</span></td>
+                    <td>£ <span class="priceperroll_16">@discountdetail.Priceperroll_16to23</span></td>
+                    <td>£ <span class="priceperroll_24">@discountdetail.Priceperroll_24to47</span> </td>
+                    <td>£ <span class="priceperroll_48">@discountdetail.Priceperroll_48</span></td>
+                    <td>
+                        <div class="pro-qty">
+                            <span class="qtybtn dec" onclick="CalculateTotalAmount(this)">-</span>
+                            <input class="qtytxt" type="text" value="0">
+                            <span class="qtybtn inc" onclick="CalculateTotalAmount(this)">+</span>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="hidden" value="@Model[0].ProductRecordID" id="itemID" />
+
+    <!--<div class="selection-summary" style="display:none">
+        <div class="selection-summary-inner">
+            <div class="table-Wrapper">
+                <table class="table table-bordered grouped basket_Table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Full width</th>
+                            <th colspan="2">Centre folded width</th>
+                            <th colspan="2">Units</th>
+                            <th colspan="2">Sub total</th>
+                        </tr>
+                    </thead>
+                    <tbody>-->
+                        @*<tr>
+                                <td colspan="2">800 mm</td>
+                                <td colspan="2" id="Center">34 mm</td>
+                                <td colspan="2">1</td>
+                                <td colspan="2"><span>£ </span>700.00</td>
+                            </tr>*@
+                    <!--</tbody>
+                </table>
+            </div>
+            <div class="amount-summary">
+                <h5>Total:</h5><br />
+                <div class="mt_basket">£ <span class="total_amount">0.00</span></div>
+            </div>
+        </div>
+    </div>-->
+
+}
+
+<script>
+
+    _tablearray = [];
+
+    function CalculatedSummary(obj) {
+
+        if (!_tablearray.includes(obj.ProductRecordID)) {
+
+            $(".basket_Table tbody").append(
+
+                '<tr class="' + obj.ProductRecordID + '"><td colspan="2">' + obj.fullWidth + '</td><td colspan="2" id="Center">' + obj.centerfoldedWidth + '</td><td colspan="2" class="Unit_' + obj.ProductRecordID + '">' + obj.units + '</td><td colspan="2">£ <span class="Subtotal' + obj.ProductRecordID + ' subamount">' + obj.Subtotal + '</span></td></tr>'
+            )
+
+            _tablearray.push(obj.ProductRecordID);
+        }
+
+        if (obj.units < 1) {
+            $(".basket_Table tbody").find("." + obj.ProductRecordID + "").remove();
+            const removeElem = _tablearray.indexOf(obj.ProductRecordID);
+            _tablearray.splice(removeElem, 1);
+        }
+
+        $(".basket_Table tbody").find(".Unit_" + obj.ProductRecordID + "").html(obj.units);
+        $(".basket_Table tbody").find(".Subtotal" + obj.ProductRecordID + "").html(obj.Subtotal.toFixed(2));
+
+        var rowCount = $(".basket_Table tbody").find("tr").length
+
+        var finalamount = 0;
+
+        if (rowCount > 0) {
+
+            for (var i = 0; i < rowCount; i++) {
+                var total = $(".basket_Table tbody").find("tr").eq(i).find(".subamount").text();
+                finalamount += parseFloat(total);
+            }
+
+            $(".total_amount").html(finalamount.toFixed(2));
+
+        }
+        else
+        {
+            $(".selection-summary").css("display", 'none');
+        }
+    }
+
+    function CalculateTotalAmount(elem) {
+
+        setTimeout(function () {
+
+            var Total_Amount = 0;
+            var Subtotal = 0;
+            var tableValues = $(elem).parents("tr");
+            var ProductRecordID = tableValues.attr("id");
+            var fullWidth = tableValues.find("#fullWidth").text();
+            var centerfoldedWidth = tableValues.find("#centerfoldedWidth").text();
+            var priceperroll_1 = parseFloat(tableValues.find(".priceperroll_1").text());
+            var priceperroll_6 = parseFloat(tableValues.find(".priceperroll_6").text());
+            var priceperroll_16 = parseFloat(tableValues.find(".priceperroll_16").text());
+            var priceperroll_24 = parseFloat(tableValues.find(".priceperroll_24").text());
+            var priceperroll_48 = parseFloat(tableValues.find(".priceperroll_48").text());
+            var units = parseInt(tableValues.find(".qtytxt").val());
+
+            if (units >= 1 && units <= 5) {
+                $(".selection-summary").css("display", 'block');
+                tableValues.find("td").removeClass("selected-column");
+                tableValues.find("td:nth-child(4)").addClass("selected-column");
+                Subtotal = priceperroll_1 * units;
+            }
+            else if (units >= 6 && units < 16) {
+                $(".selection-summary").css("display", 'block');
+                tableValues.find("td").removeClass("selected-column");
+                tableValues.find("td:nth-child(5)").addClass("selected-column");
+                Subtotal = priceperroll_6 * units;
+            }
+            else if (units >= 16 && units < 24) {
+                $(".selection-summary").css("display", 'block');
+                tableValues.find("td").removeClass("selected-column");
+                tableValues.find("td:nth-child(6)").addClass("selected-column");
+                Subtotal = priceperroll_16 * units;
+            }
+            else if (units >= 24 && units < 48) {
+                $(".selection-summary").css("display", 'block');
+                tableValues.find("td").removeClass("selected-column");
+                tableValues.find("td:nth-child(7)").addClass("selected-column");
+                Subtotal = priceperroll_24 * units;
+            }
+            else if (units >= 48) {
+                $(".selection-summary").css("display", 'block');
+                tableValues.find("td").removeClass("selected-column");
+                tableValues.find("td:nth-child(8)").addClass("selected-column");
+                Subtotal = priceperroll_48 * units;
+            }
+            else {
+                tableValues.find("td").removeClass("selected-column");
+                Subtotal = priceperroll_1 * units;
+            }
+
+
+            Total_Amount += Subtotal;
+
+            if (!_tablearray.includes(ProductRecordID)) {
+
+                $(".item_subtotal").css("display", "table-cell");
+                $(".item_action").css("display", "table-cell");
+
+                $("#Dicounttable tbody #" + ProductRecordID + "").append('<td class="Subamount' + ProductRecordID + '">£ <span class="Subtotal' + ProductRecordID + ' subamount">' + Subtotal + '</span></td><td class="addorder' + ProductRecordID + '"><a onClick="AddtoCart(this)" class="btnAddToCart pointerCursor primary-btn pd-cart text-white">@("PP.Shopping.AddToCart".Localized())</a></td>');
+
+                _tablearray.push(ProductRecordID);
+            }
+
+            
+
+            tableValues.find(".Subtotal" + ProductRecordID + "").html(Subtotal.toFixed(2));
+
+            if (units < 1) {
+                tableValues.find(".Subamount" + ProductRecordID + "").remove();
+                tableValues.find(".addorder" + ProductRecordID + "").remove();
+                const removeElem = _tablearray.indexOf(ProductRecordID);
+                _tablearray.splice(removeElem, 1);
+            }
+
+            if (_tablearray.length < 1) {
+                $(".item_subtotal").css("display", "none");
+                $(".item_action").css("display", "none");
+            }
+
+            //var obj = ({
+            //    "ProductRecordID": ProductRecordID,
+            //    "fullWidth": fullWidth,
+            //    "centerfoldedWidth": centerfoldedWidth,
+            //    "units": units,
+            //    "Subtotal": Subtotal,
+            //    "Total_Amount": Total_Amount
+            //});
+
+            //CalculatedSummary(obj);
+
+        }, 100);
+    }
+
+
+    function AddtoCart(elem) {
+        debugger
+        var itemID = $("#itemID").val();
+        var totalPrice = $(elem).parents("tr").find(".selected-column").children("span").html();
+        var quantity = $(elem).parents("tr").find(".qtytxt").val();
+        var itemDiscountID = $(elem).parents("tr").attr("id");
+
+        $.ajax({
+            url: "/Cart/AddItemToCartWithDiscount",
+            dataType: "JSON",
+            type: "POST",
+            data: {
+                itemID: itemID,
+                totalPrice: totalPrice,
+                quantity: quantity,
+                itemDiscountID: itemDiscountID
+            }
+        })
+            .done(function (response) {
+                if (response.Success) {
+                    cartItems = response.CartItems;
+
+                    updateCartInfo();
+
+                    Toast.fire({
+                        icon: 'success',
+                        iconHtml: '<i class="fas fa-cart-plus"></i>',
+                        title: response.Message
+                    });
+                }
+                else {
+                    Swal.fire(RESOURCE_ERRORHEADING, response.Message, "error");
+                }
+            })
+            .fail(function () {
+                    Swal.fire(RESOURCE_ERRORHEADING, RESOURCE_GENERICERRORMESSAGE, "error");
+            });      
+
+    }
+
+
+</script>
