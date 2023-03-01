@@ -98,8 +98,8 @@
                             <td class="p-price ltr-dir">
                                 <!-- commented this out as it shows strike through of product price but its not necessary-->
                                 @*<span>
-                    @product.Price.WithCurrency()
-                </span>*@
+                                @product.Price.WithCurrency()
+                                </span>*@
                                 @if (cartItem.Quantity <= 5)
                                 {
                                     @DiscountPrice.Priceperroll_1to5.WithCurrency() }
@@ -173,11 +173,7 @@
                         }
 
                         @*<td class="total-price ltr-dir">
-
                             @((productPrice * cartItem.Quantity).WithCurrency())
-
-
-
                         </td>*@
 
                         <td class="close-td">
