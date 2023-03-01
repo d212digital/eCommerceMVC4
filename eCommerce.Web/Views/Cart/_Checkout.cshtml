@@ -41,20 +41,45 @@
                                         var product = Model.Products.FirstOrDefault(p => p.ID == cartItem.ItemID);
                                         var currentLanguageProductRecord = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
                                         var productPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
-
+                                        var DiscountPrice = currentLanguageProductRecord.ProductDiscountDetails.SingleOrDefault(x => x.ID == cartItem.ItemDiscountID);
 
                                         <li class="fw-normal">
                                             <div>
                                                 @(currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Format("Product: {0}", product.ID))
                                             </div>
-                                            <i class="ltr-dir" title="@("PP.Checkout.ItemQuantity".LocalizedString())">x @cartItem.Quantity</i> <span class="ltr-dir">@((productPrice * cartItem.Quantity).WithCurrency())</span>
-                                        </li>
+                                            <i class="ltr-dir" title="@("PP.Checkout.ItemQuantity".LocalizedString())">x @cartItem.Quantity</i>
+
+                                            @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
+                                            {
+                                                   <span class="ltr-dir">
+                                                       @if (cartItem.Quantity <= 5)
+                                                       {
+                                                       @DiscountPrice.Priceperroll_1to5.WithCurrency() }
+                                                       else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
+                                                       {
+                                                       @DiscountPrice.Priceperroll_6to15.WithCurrency() }
+                                                       else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
+                                                       {
+                                                       @DiscountPrice.Priceperroll_16to23.WithCurrency() }
+                                                       else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
+                                                       {
+                                                       @DiscountPrice.Priceperroll_24to47.WithCurrency() }
+                                                       else if (cartItem.Quantity >= 48)
+                                                       {
+                                                       @DiscountPrice.Priceperroll_48.WithCurrency()}
+                                                       </span>
+                                                       }
+                                                       else
+                                                       {
+                                                       <span class="ltr-dir">@((productPrice * cartItem.Quantity).WithCurrency())</span>
+                                                       }
+</li>
                                     }
                                     @*<li class="fw-normal">
                                         Item Totals (Incl VAT)
                                         <span class="ltr-dir">@Model.TotalAmount.WithCurrency()</span>
                                     </li>*@
-                                    <li class="fw-normal">
+                                    @*<li class="fw-normal">
                                         @("PP.Checkout.Discount".LocalizedString())
                                         <span class="ltr-dir @(Model.PromoApplied ? "text-success" : string.Empty)">@Model.Discount.WithCurrency()</span>
                                         @if (Model.PromoApplied)
@@ -68,7 +93,7 @@
                                             <br />
                                             <a class="text-info" href="@Url.Cart()">@("PP.Checkout.HavePromoApplyHere".LocalizedString())</a>
                                         }
-                                    </li>
+                                    </li>*@
 
                                     <li class="fw-normal">
                                         @("PP.Checkout.ShippingCharges".LocalizedString())
