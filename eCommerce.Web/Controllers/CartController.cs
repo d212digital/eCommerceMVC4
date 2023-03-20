@@ -9,7 +9,6 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -58,12 +57,12 @@ namespace eCommerce.Web.Controllers
 
             if (SessionHelper.CartItems != null && SessionHelper.CartItems.Count > 0)
             {
-                model.CartItems = SessionHelper.CartItems.OrderByDescending(x=>x.ItemID).ToList();
-                model.ProductIDs = SessionHelper.CartItems.Select(x => x.ItemID).ToList();               
+                model.CartItems = SessionHelper.CartItems.OrderByDescending(x => x.ItemID).ToList();
+                model.ProductIDs = SessionHelper.CartItems.Select(x => x.ItemID).ToList();
 
                 if (model.ProductIDs.Count > 0)
                 {
-                    model.Products = ProductsService.Instance.GetProductsByIDs(model.ProductIDs);                   
+                    model.Products = ProductsService.Instance.GetProductsByIDs(model.ProductIDs);
                 }
             }
 
@@ -84,7 +83,7 @@ namespace eCommerce.Web.Controllers
             }
             else
             {
-                if(Request.IsAjaxRequest())
+                if (Request.IsAjaxRequest())
                 {
                     return PartialView("_CartItems", model);
                 }
@@ -97,7 +96,7 @@ namespace eCommerce.Web.Controllers
             var cartItemsUpdate = GetCartItemUpdateFromForm(formCollection);
 
             CartItemsViewModel model = new CartItemsViewModel();
-            
+
             if (SessionHelper.CartItems != null)
             {
                 var productIDs = cartItemsUpdate.CartItems != null &&
@@ -226,7 +225,7 @@ namespace eCommerce.Web.Controllers
             return json;
         }
 
-        public JsonResult AddItemToCartWithDiscount(int itemID,decimal totalPrice,int itemDiscountID, int quantity = 1)
+        public JsonResult AddItemToCartWithDiscount(int itemID, decimal totalPrice, int itemDiscountID, int quantity = 1)
         {
             JsonResult json = new JsonResult();
 
@@ -234,7 +233,7 @@ namespace eCommerce.Web.Controllers
 
             if (product != null)
             {
-                                
+
                 if (product.StockQuantity > 0 && product.StockQuantity >= quantity)
                 {
                     var message = string.Empty;
@@ -254,9 +253,9 @@ namespace eCommerce.Web.Controllers
                         //add the product to cart.
                         SessionHelper.CartItems.Add(new CartItem() { ItemID = product.ID, Price = totalPrice, ItemDiscountID = itemDiscountID, Quantity = quantity });
                         message = "PP.Shopping.ItemAddedToCart".LocalizedString();
-                }
+                    }
 
-                json.Data = new { Success = true, Message = message, CartItems = SessionHelper.CartItems };
+                    json.Data = new { Success = true, Message = message, CartItems = SessionHelper.CartItems };
                 }
                 else
                 {
@@ -323,7 +322,7 @@ namespace eCommerce.Web.Controllers
 
             model.CartHasProducts = model.Products != null && model.Products.Count > 0;
 
-            if(model.CartHasProducts)
+            if (model.CartHasProducts)
             {
                 model.FinalAmount = model.TotalAmount - model.Discount + ConfigurationsHelper.FlatDeliveryCharges;
             }

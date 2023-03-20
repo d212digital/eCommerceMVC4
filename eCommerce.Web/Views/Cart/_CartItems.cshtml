@@ -88,34 +88,56 @@
                                 </h5>
                                 @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                                 {
-                                    <h6>@DiscountPrice.Fullwidth mm / @DiscountPrice.Centrefoldedwidth mm</h6>
-                                    <h6>@DiscountPrice.Rolllength mtrs</h6>
+                                    if (DiscountPrice != null)
+                                    {
+                                        <h6>@DiscountPrice.Fullwidth/@DiscountPrice.Centrefoldedwidth mm</h6>
+                                        <h6>@DiscountPrice.Rolllength mtrs</h6>
+                                    }
                                 }
                             </a>
                         </td>
                         @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                         {
-
                             <td class="p-price ltr-dir">
                                 <!-- commented this out as it shows strike through of product price but its not necessary-->
                                 @*<span>
-                                @product.Price.WithCurrency()
-                                </span>*@
+                @product.Price.WithCurrency()
+                </span>*@
                                 @if (cartItem.Quantity <= 5)
                                 {
-                                    @DiscountPrice.Priceperroll_1to5.WithCurrency() }
+                                    if (DiscountPrice != null)
+                                    {
+                                        @DiscountPrice.Priceperroll_1to5.WithCurrency()
+                                    }
+                                }
                                 else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
                                 {
-                                    @DiscountPrice.Priceperroll_6to15.WithCurrency() }
+                                    if (DiscountPrice != null)
+                                    {
+                                        @DiscountPrice.Priceperroll_6to15.WithCurrency()
+                                    }
+                                }
                                 else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
                                 {
-                                    @DiscountPrice.Priceperroll_16to23.WithCurrency() }
+                                    if (DiscountPrice != null)
+                                    {
+                                        @DiscountPrice.Priceperroll_16to23.WithCurrency()
+                                    }
+                                }
                                 else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
                                 {
-                                    @DiscountPrice.Priceperroll_24to47.WithCurrency() }
+                                    if (DiscountPrice != null)
+                                    {
+                                        @DiscountPrice.Priceperroll_24to47.WithCurrency()
+                                    }
+                                }
                                 else if (cartItem.Quantity >= 48)
                                 {
-                                    @DiscountPrice.Priceperroll_48.WithCurrency()}
+                                    if (DiscountPrice != null)
+                                    {
+                                        @DiscountPrice.Priceperroll_48.WithCurrency()
+                                    }
+                                }
                             </td>
                         }
                         else
@@ -141,41 +163,47 @@
 
                         @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                         {
-
                             <td class="total-price ltr-dir">
-             
-                                @if (cartItem.Quantity <= 5)
+                                @if (DiscountPrice != null)
                                 {
-                                    @((DiscountPrice.Priceperroll_1to5 *cartItem.Quantity).WithCurrency()) }
-                                else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
-                                {
-                                    @((DiscountPrice.Priceperroll_6to15 *cartItem.Quantity).WithCurrency()) }
-                                else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
-                                {
-                                    @((DiscountPrice.Priceperroll_16to23 * cartItem.Quantity).WithCurrency()) }
-                                else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
-                                {
-                                    @((DiscountPrice.Priceperroll_24to47*cartItem.Quantity).WithCurrency()) }
-                                else if (cartItem.Quantity >= 48)
-                                {
-                                    @((DiscountPrice.Priceperroll_48 * cartItem.Quantity).WithCurrency()) }
+                                   if (cartItem.Quantity <= 5)
+                                    {
+                                        @((DiscountPrice.Priceperroll_1to5 *cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
+                                    {
+                                        @((DiscountPrice.Priceperroll_6to15 *cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
+                                    {
+                                        @((DiscountPrice.Priceperroll_16to23 * cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
+                                    {
+                                        @((DiscountPrice.Priceperroll_24to47*cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 48)
+                                    {
+                                        @((DiscountPrice.Priceperroll_48 * cartItem.Quantity).WithCurrency())
+                                    }
+                                }
                             </td>
                         }
                         else
                         {
-                    <td class="total-price ltr-dir">
-                        @if (product.Discount.HasValue && product.Discount.Value > 0)
-                        {
-                            <span>
-                                @((product.Price * cartItem.Quantity).WithCurrency())
-                            </span>}
-                        @((productPrice * cartItem.Quantity).WithCurrency())
-                    </td>
+                            <td class="total-price ltr-dir">
+                                @if (product.Discount.HasValue && product.Discount.Value > 0)
+                                {
+                                    <span>
+                                        @((product.Price * cartItem.Quantity).WithCurrency())
+                                    </span>}
+                                @((productPrice * cartItem.Quantity).WithCurrency())
+                            </td>
                         }
 
                         @*<td class="total-price ltr-dir">
-                            @((productPrice * cartItem.Quantity).WithCurrency())
-                        </td>*@
+            @((productPrice * cartItem.Quantity).WithCurrency())
+        </td>*@
 
                         <td class="close-td">
                             <i class="btnRemoveFromCart fas fa-times" title="@("PP.Cart.RemoveItem".LocalizedString())"></i>

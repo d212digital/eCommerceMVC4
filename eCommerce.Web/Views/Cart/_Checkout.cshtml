@@ -43,37 +43,45 @@
                                         var productPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
                                         var DiscountPrice = currentLanguageProductRecord.ProductDiscountDetails.SingleOrDefault(x => x.ID == cartItem.ItemDiscountID);
 
-                                        <li class="fw-normal">
+                                        <li class="font-weight-normal">
                                             <div>
                                                 @(currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Format("Product: {0}", product.ID))
                                             </div>
-                                            <i class="ltr-dir" title="@("PP.Checkout.ItemQuantity".LocalizedString())">x @cartItem.Quantity</i>
+                                            @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
+                                            {
+                                                if (DiscountPrice != null)
+                                                {
+                                                  <h7 class="text-lowercase">@DiscountPrice.Fullwidth/@DiscountPrice.Centrefoldedwidth mm</h7>
+                                                }
+                                            }
+                                            <br />
+                                            <i class="ltr-dir" title="@("PP.Checkout.ItemQuantity".LocalizedString())">qty: @cartItem.Quantity</i>
 
                                             @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                                             {
-                                                   <span class="ltr-dir">
-                                                       @if (cartItem.Quantity <= 5)
-                                                       {
-                                                           @((DiscountPrice.Priceperroll_1to5 *cartItem.Quantity).WithCurrency()) }
-                                                       else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
-                                                       {
-                                                           @((DiscountPrice.Priceperroll_6to15 *cartItem.Quantity).WithCurrency()) }
-                                                       else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
-                                                       {
-                                                           @((DiscountPrice.Priceperroll_16to23 * cartItem.Quantity).WithCurrency()) }
-                                                       else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
-                                                       {
-                                                           @((DiscountPrice.Priceperroll_24to47*cartItem.Quantity).WithCurrency()) }
-                                                       else if (cartItem.Quantity >= 48)
-                                                       {
-                                                           @((DiscountPrice.Priceperroll_48 * cartItem.Quantity).WithCurrency())}
-                                                   </span>
-                                                       }
-                                                       else
-                                                       {
-                                                       <span class="ltr-dir">@((productPrice * cartItem.Quantity).WithCurrency())</span>
-                                                       }
-                                                </li>
+                                                <span class="ltr-dir">
+                                                    @if (cartItem.Quantity <= 5)
+                                                    {
+                                                        @((DiscountPrice.Priceperroll_1to5 *cartItem.Quantity).WithCurrency()) }
+                                                    else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
+                                                    {
+                                                        @((DiscountPrice.Priceperroll_6to15 *cartItem.Quantity).WithCurrency()) }
+                                                    else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
+                                                    {
+                                                        @((DiscountPrice.Priceperroll_16to23 * cartItem.Quantity).WithCurrency()) }
+                                                    else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
+                                                    {
+                                                        @((DiscountPrice.Priceperroll_24to47*cartItem.Quantity).WithCurrency()) }
+                                                    else if (cartItem.Quantity >= 48)
+                                                    {
+                                                        @((DiscountPrice.Priceperroll_48 * cartItem.Quantity).WithCurrency())}
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="ltr-dir">@((productPrice * cartItem.Quantity).WithCurrency())</span>
+                                            }
+                                        </li>
                                         }
                                     @*<li class="fw-normal">
                                         Item Totals (Incl VAT)
