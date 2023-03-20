@@ -91,14 +91,14 @@
                                         @(Model.Order.ID)
                                     </td>
                                 </tr>
-                                <tr>
+                                @*<tr>
                                     <td style="width:50%;">
                                         @("PP.Tracking.OrderUniqueCode".LocalizedString()):
                                     </td>
                                     <td style="width:50%;">
                                         @Model.Order.OrderCode
                                     </td>
-                                </tr>
+                                </tr>*@
                             </tbody>
                         </table>
                     </div>
@@ -128,7 +128,7 @@
                                 @foreach (var orderItem in Model.Order.OrderItems)
                                 {
                                     var currentLanguageProductRecord = orderItem.Product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
-
+                                    var DiscountPrice = currentLanguageProductRecord.ProductDiscountDetails.FirstOrDefault(x => x.ProductRecordID == orderItem.ProductID);
                                     i++;
 
                                     <tr>
@@ -137,6 +137,14 @@
                                             <a class="text-primary" href="@Url.ProductDetails(orderItem.Product.Category.SanitizedName, orderItem.ProductID)" target="_blank">
                                                 @(currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty)
                                             </a>
+                                            @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
+                                            {
+                                                if (DiscountPrice != null)
+                                                {
+                                                    <h6>@DiscountPrice.Fullwidth/@DiscountPrice.Centrefoldedwidth mm</h6>
+                                                    <h6>@DiscountPrice.Rolllength mtrs</h6>
+                                                }
+                                            }
                                         </td>
                                         <td class="ltr-dir">
                                             @orderItem.ItemPrice.WithCurrency()

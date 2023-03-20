@@ -90,14 +90,14 @@
                                 @(Model.Order.ID)
                             </td>
                         </tr>
-                        <tr>
+                        @*<tr>
                             <td style="width:50%;">
                                 @("Dashboard.OrderDetails.OrderUniqueCode".Localized()):
                             </td>
                             <td style="width:50%;">
                                 @Model.Order.OrderCode
                             </td>
-                        </tr>
+                        </tr>*@
                     </tbody>
                 </table>
             </li>
@@ -119,15 +119,26 @@
                         @foreach (var orderItem in Model.Order.OrderItems)
                         {
                             var currentLanguageProductRecord = orderItem.Product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
-                      
+                            
+                            var DiscountPrice = currentLanguageProductRecord.ProductDiscountDetails.FirstOrDefault(x => x.ProductRecordID == orderItem.ProductID);
+
                             i++;
 
                             <tr>
                                 <th scope="row">@i</th>
                                 <td>
-                                    <a class="text-primary" href="@Url.ProductDetails(orderItem.Product.Category.SanitizedName, orderItem.ProductID)" target="_blank">
+                                    <h5 class="text-">
                                         @(currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Empty)
-                                    </a>
+                                    </h5>
+                                    @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
+                                    {
+                                        if (DiscountPrice != null)
+                                        {
+                                            <h6 class="text-secondary">@DiscountPrice.Fullwidth/@DiscountPrice.Centrefoldedwidth mm</h6>
+                                            <h6 class="text-secondary">@DiscountPrice.Rolllength mtrs</h6>
+                                        }
+                                    }
+
                                 </td>
                                 <td>
                                     @orderItem.ItemPrice.WithCurrency()

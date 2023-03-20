@@ -1,9 +1,7 @@
-﻿using AuthorizeNet.Api.Controllers.Bases;
-using AuthorizeNet.Api.Contracts.V1;
-using AuthorizeNet.Api.Controllers;
+﻿using AuthorizeNet.Api.Contracts.V1;
 using eCommerce.Entities;
 using eCommerce.Services;
-using eCommerce.Shared.Extensions;
+using eCommerce.Shared.Enums;
 using eCommerce.Shared.Helpers;
 using eCommerce.Web.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -12,11 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using System.Web;
-using eCommerce.Shared.Enums;
-using eCommerce.Entities.CustomEntities;
-using System.Threading;
+using System.Web.Mvc;
 
 namespace eCommerce.Web.Controllers
 {
@@ -155,7 +150,7 @@ namespace eCommerce.Web.Controllers
                     newOrder.CustomerZipCode = model.ZipCode;
 
                     newOrder.OrderItems = new List<OrderItem>();
-                    foreach (var product in SessionHelper.CartItems.Select(x=>model.Products.FirstOrDefault(y=>y.ID == x.ItemID)))
+                    foreach (var product in SessionHelper.CartItems.Select(x => model.Products.FirstOrDefault(y => y.ID == x.ItemID)))
                     {
                         var currentLanguageProductRecord = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
 
@@ -284,7 +279,7 @@ namespace eCommerce.Web.Controllers
                                         .Select(x => x.ErrorMessage))
                 };
             }
-            
+
             return jsonResult;
         }
 
@@ -310,7 +305,7 @@ namespace eCommerce.Web.Controllers
                 {
                     var newOrder = new Order();
 
-                    if(User.Identity.IsAuthenticated)
+                    if (User.Identity.IsAuthenticated)
                     {
                         newOrder.CustomerID = User.Identity.GetUserId();
                     }
@@ -334,7 +329,7 @@ namespace eCommerce.Web.Controllers
 
                                 //send account register notification email
                                 await UserManager.SendEmailAsync(user.Id, EmailTextHelpers.AccountRegisterEmailSubject(AppDataHelper.CurrentLanguage.ID), EmailTextHelpers.AccountRegisterEmailBody(AppDataHelper.CurrentLanguage.ID, Url.Action("Login", "Users", null, protocol: Request.Url.Scheme)));
-                                
+
                                 newOrder.CustomerID = user.Id;
                             }
                             else
@@ -439,7 +434,7 @@ namespace eCommerce.Web.Controllers
                             await UserManager.SendEmailAsync(newOrder.CustomerID, EmailTextHelpers.OrderPlacedEmailSubject(AppDataHelper.CurrentLanguage.ID, newOrder.ID), EmailTextHelpers.OrderPlacedEmailBody(AppDataHelper.CurrentLanguage.ID, newOrder.ID, Url.Action("Tracking", "Orders", new { orderID = newOrder.ID }, protocol: Request.Url.Scheme)));
 
                             //send order placed notification email to admin emails
-                            await new EmailService().SendToEmailAsync(ConfigurationsHelper.SendGrid_FromEmailAddressName, ConfigurationsHelper.SendGrid_FromEmailAddress, ConfigurationsHelper.AdminEmailAddress, EmailTextHelpers.OrderPlacedEmailSubject_Admin(AppDataHelper.CurrentLanguage.ID, newOrder.ID), EmailTextHelpers.OrderPlacedEmailBody_Admin(AppDataHelper.CurrentLanguage.ID, newOrder.ID, Url.Action("Details", "Orders", new { area = "Dashboard",  ID = newOrder.ID }, protocol: Request.Url.Scheme)));
+                            await new EmailService().SendToEmailAsync(ConfigurationsHelper.SendGrid_FromEmailAddressName, ConfigurationsHelper.SendGrid_FromEmailAddress, ConfigurationsHelper.AdminEmailAddress, EmailTextHelpers.OrderPlacedEmailSubject_Admin(AppDataHelper.CurrentLanguage.ID, newOrder.ID), EmailTextHelpers.OrderPlacedEmailBody_Admin(AppDataHelper.CurrentLanguage.ID, newOrder.ID, Url.Action("Details", "Orders", new { area = "Dashboard", ID = newOrder.ID }, protocol: Request.Url.Scheme)));
                         }
 
                         jsonResult.Data = new
