@@ -91,6 +91,46 @@ namespace eCommerce.Web.Controllers
             }
         }
 
+        public decimal? CalculateDiscount(List<ProductDiscountDetails> productDiscountDetails, int Quantity)
+        {
+            decimal? calculatedPrice = null;
+            ProductDiscountDetails discountPrice = null;
+
+            if (productDiscountDetails != null)
+            {
+                if (Quantity <= 5)
+                {
+                    discountPrice = productDiscountDetails.FirstOrDefault(x => x.Priceperroll_1to5 != null);
+                    calculatedPrice = discountPrice != null ? discountPrice.Priceperroll_1to5 : (decimal?)null;
+                }
+                else if (Quantity >= 6 && Quantity <= 15)
+                {
+                    discountPrice = productDiscountDetails.FirstOrDefault(x => x.Priceperroll_6to15 != null);
+                    calculatedPrice = discountPrice != null ? discountPrice.Priceperroll_6to15 : (decimal?)null;
+                }
+                else if (Quantity >= 16 && Quantity <= 23)
+                {
+                    discountPrice = productDiscountDetails.FirstOrDefault(x => x.Priceperroll_16to23 != null);
+                    calculatedPrice = discountPrice != null ? discountPrice.Priceperroll_16to23 : (decimal?)null;
+                }
+                else if (Quantity >= 24 && Quantity <= 47)
+                {
+                    discountPrice = productDiscountDetails.FirstOrDefault(x => x.Priceperroll_24to47 != null);
+                    calculatedPrice = discountPrice != null ? discountPrice.Priceperroll_24to47 : (decimal?)null;
+                }
+                else if (Quantity >= 48)
+                {
+                    discountPrice = productDiscountDetails.FirstOrDefault(x => x.Priceperroll_48 != null);
+                    calculatedPrice = discountPrice != null ? discountPrice.Priceperroll_48 : (decimal?)null;
+                }
+
+                // Continue for other ranges
+            }
+
+            return calculatedPrice;
+        }
+
+
         public ActionResult UpdateCart(FormCollection formCollection)
         {
             var cartItemsUpdate = GetCartItemUpdateFromForm(formCollection);
@@ -100,8 +140,8 @@ namespace eCommerce.Web.Controllers
             if (SessionHelper.CartItems != null)
             {
                 var productIDs = cartItemsUpdate.CartItems != null &&
-                                   cartItemsUpdate.CartItems.Count > 0 ?
-                                   cartItemsUpdate.CartItems.Select(x => x.ItemID).ToList() : new List<int>();
+                                    cartItemsUpdate.CartItems.Count > 0 ?
+                                    cartItemsUpdate.CartItems.Select(x => x.ItemID).ToList() : new List<int>();
 
                 if (productIDs.Count > 0)
                 {
@@ -110,18 +150,37 @@ namespace eCommerce.Web.Controllers
 
                 SessionHelper.CartItems.Clear();
 
-                if (model.Products != null && model.Products.Count > 0)
+                foreach (var product in model.Products)
                 {
-                    foreach (var product in model.Products)
+                    var cartItemQuantity = cartItemsUpdate.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity;
+                    var productPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
+
+                    // Use the CalculateDiscountPrice method to calculate the discounted price
+                    var productDiscountDetails = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID)?.ProductDiscountDetails;
+
+                    // Use the calculated discount price if it's not null, otherwise use the original product price
+                    var discountPrice = CalculateDiscount(productDiscountDetails, cartItemQuantity) ?? productPrice;
+
+                    var productDiscountDetailForCartItem = productDiscountDetails
+                        .FirstOrDefault(x => x.ItemDiscountID == product.ID); // Get the correct product discount detail.
+
+                    // Add the updated cart item to the session
+                    SessionHelper.CartItems.Add(new CartItem()
                     {
-                        var productPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
-
-                        SessionHelper.CartItems.Add(new CartItem() { ItemID = product.ID, Price = productPrice, Quantity = cartItemsUpdate.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity });
-                    }
+                        ItemID = product.ID,
+                        Price = productPrice,
+                        DiscountPrice = discountPrice, // Set the DiscountPrice here
+                        Quantity = cartItemQuantity,
+                        // Set the additional properties.
+                        Fullwidth = productDiscountDetailForCartItem?.Fullwidth,
+                        Centrefoldedwidth = productDiscountDetailForCartItem?.Centrefoldedwidth,
+                        Rolllength = productDiscountDetailForCartItem?.Rolllength,
+                    });
                 }
-
                 model.CartItems = SessionHelper.CartItems.OrderByDescending(x => x.ItemID).ToList();
                 model.ProductIDs = SessionHelper.CartItems.Select(x => x.ItemID).ToList();
+
+
             }
 
             if (!string.IsNullOrEmpty(cartItemsUpdate.PromoCode))

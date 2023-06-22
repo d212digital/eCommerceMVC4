@@ -119,8 +119,7 @@
                         @foreach (var orderItem in Model.Order.OrderItems)
                         {
                             var currentLanguageProductRecord = orderItem.Product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
-                            
-                            var DiscountPrice = currentLanguageProductRecord.ProductDiscountDetails.FirstOrDefault(x => x.ProductRecordID == orderItem.ProductID);
+                            var discountPrice = currentLanguageProductRecord.ProductDiscountDetails.FirstOrDefault(x => x.ProductRecordID == orderItem.ProductID);
 
                             i++;
 
@@ -132,10 +131,10 @@
                                     </h5>
                                     @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                                     {
-                                        if (DiscountPrice != null)
+                                        if (discountPrice != null)
                                         {
-                                            <h6 class="text-secondary">@DiscountPrice.Fullwidth/@DiscountPrice.Centrefoldedwidth mm</h6>
-                                            <h6 class="text-secondary">@DiscountPrice.Rolllength mtrs</h6>
+                                            <h6>@discountPrice.Fullwidth/@discountPrice.Centrefoldedwidth mm</h6>
+                                            <h6>@discountPrice.Rolllength mtrs</h6>
                                         }
                                     }
 

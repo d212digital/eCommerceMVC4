@@ -15,8 +15,10 @@ namespace eCommerce.Entities
         /// Item Price is in Order Item because we can have a scenerio where we might charge less or greater than the Product Price.
         /// </summary>
         public decimal ItemPrice { get; set; }
-
         public int Quantity { get; set; }
+
+        [NotMapped]
+        public int DiscountItem { get; set; } // Add this property to the class again, may need to be removed
 
     }
 }

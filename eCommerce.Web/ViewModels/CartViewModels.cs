@@ -1,11 +1,6 @@
 ﻿using eCommerce.Entities;
 using eCommerce.Entities.CustomEntities;
-using eCommerce.Shared.Helpers;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace eCommerce.Web.ViewModels
 {
@@ -22,7 +17,7 @@ namespace eCommerce.Web.ViewModels
     {
         public List<CartItem> CartItems { get; set; }
         public string PromoCode { get; set; }
-        
+
     }
 
     public class CheckoutViewModel : CartItemsViewModel

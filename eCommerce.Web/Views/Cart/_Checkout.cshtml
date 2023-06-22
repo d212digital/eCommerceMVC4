@@ -33,7 +33,7 @@
                             <div class="order-total">
                                 <ul class="order-table">
                                     <li>
-                                        @("PP.Checkout.Product".LocalizedString())
+                                         @("PP.Checkout.Product".LocalizedString())
                                         <span>@("PP.Checkout.Total".LocalizedString())</span>
                                     </li>
                                     @foreach (var cartItem in Model.CartItems)
@@ -41,7 +41,9 @@
                                         var product = Model.Products.FirstOrDefault(p => p.ID == cartItem.ItemID);
                                         var currentLanguageProductRecord = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
                                         var productPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
-                                        var DiscountPrice = currentLanguageProductRecord.ProductDiscountDetails.SingleOrDefault(x => x.ID == cartItem.ItemDiscountID);
+                                        var discountDetails = currentLanguageProductRecord.ProductDiscountDetails;
+                                        var DiscountPrice = cartItem.CalculateDiscount;
+                                        var DiscountInfo = currentLanguageProductRecord.ProductDiscountDetails.SingleOrDefault(x => x.ID == cartItem.ItemDiscountID);
 
                                         <li class="font-weight-normal">
                                             <div>
@@ -51,7 +53,7 @@
                                             {
                                                 if (DiscountPrice != null)
                                                 {
-                                                  <h7 class="text-lowercase">@DiscountPrice.Fullwidth/@DiscountPrice.Centrefoldedwidth mm</h7>
+                                                    <h7 class="text-lowercase">@DiscountInfo.Fullwidth/@DiscountInfo.Centrefoldedwidth mm</h7>
                                                 }
                                             }
                                             <br />
@@ -59,28 +61,18 @@
 
                                             @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                                             {
-                                                <span class="ltr-dir">
-                                                    @if (cartItem.Quantity <= 5)
-                                                    {
-                                                        @((DiscountPrice.Priceperroll_1to5 *cartItem.Quantity).WithCurrency()) }
-                                                    else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
-                                                    {
-                                                        @((DiscountPrice.Priceperroll_6to15 *cartItem.Quantity).WithCurrency()) }
-                                                    else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
-                                                    {
-                                                        @((DiscountPrice.Priceperroll_16to23 * cartItem.Quantity).WithCurrency()) }
-                                                    else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
-                                                    {
-                                                        @((DiscountPrice.Priceperroll_24to47*cartItem.Quantity).WithCurrency()) }
-                                                    else if (cartItem.Quantity >= 48)
-                                                    {
-                                                        @((DiscountPrice.Priceperroll_48 * cartItem.Quantity).WithCurrency())}
-                                                </span>
+                                                if (cartItem.DiscountPrice != null)
+                                                {
+                                                    <span class="ltr-dir">@((cartItem.DiscountPrice * cartItem.Quantity).WithCurrency())</span>
+
+                                                }
+
                                             }
                                             else
                                             {
                                                 <span class="ltr-dir">@((productPrice * cartItem.Quantity).WithCurrency())</span>
                                             }
+
                                         </li>
                                         }
                                     @*<li class="fw-normal">

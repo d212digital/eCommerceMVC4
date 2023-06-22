@@ -21,6 +21,7 @@ namespace eCommerce.Web.Controllers
         private eCommerceUserManager _userManager;
         private eCommerceRoleManager _roleManager;
 
+
         public eCommerceSignInManager SignInManager
         {
             get
@@ -159,7 +160,9 @@ namespace eCommerce.Web.Controllers
                             ProductID = product.ID,
                             ProductName = currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Format("Product ID : {0}", product.ID),
                             ItemPrice = product.Price,
-                            Quantity = SessionHelper.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity
+                            Quantity = SessionHelper.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity,
+                            // Set the DiscountItem property to the ID of the product discount detail, if any.
+                            DiscountItem = currentLanguageProductRecord?.ProductDiscountDetails?.FirstOrDefault()?.ProductRecordID ?? 0
                         };
 
                         newOrder.OrderItems.Add(orderItem);
@@ -366,18 +369,53 @@ namespace eCommerce.Web.Controllers
                     newOrder.CustomerZipCode = model.ZipCode;
 
                     newOrder.OrderItems = new List<OrderItem>();
-                    foreach (var product in SessionHelper.CartItems.Select(x => model.Products.FirstOrDefault(y => y.ID == x.ItemID)))
+                    foreach (var cartItem in SessionHelper.CartItems)
                     {
+                        var product = model.Products.FirstOrDefault(y => y.ID == cartItem.ItemID);
+
                         var currentLanguageProductRecord = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
+
+                        var discountPrice = currentLanguageProductRecord.ProductDiscountDetails.SingleOrDefault(x => x.ID == cartItem.ItemDiscountID);
+
+                        decimal itemPrice = 0;
+
+                        if (discountPrice != null)
+                        {
+                            int itemQuantity = cartItem.Quantity;
+
+                            if (itemQuantity <= 5)
+                            {
+                                itemPrice = discountPrice.Priceperroll_1to5;
+                            }
+                            else if (itemQuantity >= 6 && itemQuantity <= 15)
+                            {
+                                itemPrice = discountPrice.Priceperroll_6to15;
+                            }
+                            else if (itemQuantity >= 16 && itemQuantity <= 23)
+                            {
+                                itemPrice = discountPrice.Priceperroll_16to23;
+                            }
+                            else if (itemQuantity >= 24 && itemQuantity <= 47)
+                            {
+                                itemPrice = discountPrice.Priceperroll_24to47;
+                            }
+                            else if (itemQuantity >= 48)
+                            {
+                                itemPrice = discountPrice.Priceperroll_48;
+                            }
+                        }
+                        else
+                        {
+                            itemPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
+                        }
 
                         var orderItem = new OrderItem
                         {
                             ProductID = product.ID,
                             ProductName = currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Format("Product ID : {0}", product.ID),
-
-                            ItemPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price,
-
-                            Quantity = SessionHelper.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity
+                            ItemPrice = itemPrice,
+                            Quantity = cartItem.Quantity,
+                            DiscountItem = discountPrice?.ID ?? 0,
                         };
 
                         newOrder.OrderItems.Add(orderItem);
@@ -567,7 +605,11 @@ namespace eCommerce.Web.Controllers
                             ProductID = product.ID,
                             ProductName = currentLanguageProductRecord != null ? currentLanguageProductRecord.Name : string.Format("Product ID : {0}", product.ID),
                             ItemPrice = product.Price,
-                            Quantity = SessionHelper.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity
+                            Quantity = SessionHelper.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity,
+
+                            // Set the DiscountItem property to the ID of the product discount detail, if any.
+                            DiscountItem = currentLanguageProductRecord?.ProductDiscountDetails?.FirstOrDefault()?.ProductRecordID ?? 0
+
                         };
 
                         newOrder.OrderItems.Add(orderItem);

@@ -1,10 +1,6 @@
 ﻿using eCommerce.Entities;
 using eCommerce.Entities.CustomEntities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eCommerce.Shared.Helpers
 {
@@ -18,10 +14,11 @@ namespace eCommerce.Shared.Helpers
 
         public static Cart Cart
         {
-            get {
+            get
+            {
                 var cart = SessionManager.Get<Cart>(CART);
 
-                if(cart == null)
+                if (cart == null)
                 {
                     cart = new Cart();
 
@@ -39,7 +36,7 @@ namespace eCommerce.Shared.Helpers
             {
                 var cartItems = SessionManager.Get<List<CartItem>>(CART_ITEMS);
 
-                if(cartItems == null || cartItems.Count == 0)
+                if (cartItems == null || cartItems.Count == 0)
                 {
                     cartItems = cartItems == null ? new List<CartItem>() : cartItems;
 
@@ -49,6 +46,15 @@ namespace eCommerce.Shared.Helpers
                 return cartItems;
             }
             set { SessionManager.Set(CART_ITEMS, value); }
+        }
+
+        public static decimal? DiscountPrice
+        {
+            get
+            {
+                return SessionManager.Get<decimal?>("DISCOUNT_PRICE");
+            }
+            set { SessionManager.Set("DISCOUNT_PRICE", value); }
         }
 
         public static Promo Promo

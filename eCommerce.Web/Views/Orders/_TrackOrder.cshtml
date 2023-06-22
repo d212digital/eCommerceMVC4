@@ -129,6 +129,7 @@
                                 {
                                     var currentLanguageProductRecord = orderItem.Product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID);
                                     var DiscountPrice = currentLanguageProductRecord.ProductDiscountDetails.FirstOrDefault(x => x.ProductRecordID == orderItem.ProductID);
+
                                     i++;
 
                                     <tr>

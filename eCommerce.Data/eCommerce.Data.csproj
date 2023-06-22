@@ -103,6 +103,10 @@
     <Compile Include="Migrations\202209121201385_RemovekeyFromDiscount.designer.cs">
       <DependentUpon>202209121201385_RemovekeyFromDiscount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306220920343_DiscountUpdates.cs" />
+    <Compile Include="Migrations\202306220920343_DiscountUpdates.designer.cs">
+      <DependentUpon>202306220920343_DiscountUpdates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -149,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209121201385_RemovekeyFromDiscount.resx">
       <DependentUpon>202209121201385_RemovekeyFromDiscount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306220920343_DiscountUpdates.resx">
+      <DependentUpon>202306220920343_DiscountUpdates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

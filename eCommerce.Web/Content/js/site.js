@@ -498,6 +498,7 @@ function applyQuantityFunctions() {
         }
 
         $input.val(newVal);
+        updateCart(); // Call updateCart here to submit new quantity
     });
 
     $('.qtytxt').off('keyup').on('keyup', function () {
@@ -515,8 +516,11 @@ function applyQuantityFunctions() {
         else {
             $(this).val(1);
         }
+
+        updateCart(); // Also call updateCart here when quantity is manually entered
     });
 }
+
 
 function applyDarkMode() {
     if ($(".darkreader")[0]) {
