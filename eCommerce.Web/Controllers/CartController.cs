@@ -150,37 +150,34 @@ namespace eCommerce.Web.Controllers
 
                 SessionHelper.CartItems.Clear();
 
-                foreach (var product in model.Products)
-                {
-                    var cartItemQuantity = cartItemsUpdate.CartItems.FirstOrDefault(x => x.ItemID == product.ID).Quantity;
-                    var productPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
+                if (model.Products != null)
 
-                    // Use the CalculateDiscountPrice method to calculate the discounted price
-                    var productDiscountDetails = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID)?.ProductDiscountDetails;
-
-                    // Use the calculated discount price if it's not null, otherwise use the original product price
-                    var discountPrice = CalculateDiscount(productDiscountDetails, cartItemQuantity) ?? productPrice;
-
-                    var productDiscountDetailForCartItem = productDiscountDetails
-                        .FirstOrDefault(x => x.ItemDiscountID == product.ID); // Get the correct product discount detail.
-
-                    // Add the updated cart item to the session
-                    SessionHelper.CartItems.Add(new CartItem()
+                    foreach (var product in model.Products)
                     {
-                        ItemID = product.ID,
-                        Price = productPrice,
-                        DiscountPrice = discountPrice, // Set the DiscountPrice here
-                        Quantity = cartItemQuantity,
-                        // Set the additional properties.
-                        Fullwidth = productDiscountDetailForCartItem?.Fullwidth,
-                        Centrefoldedwidth = productDiscountDetailForCartItem?.Centrefoldedwidth,
-                        Rolllength = productDiscountDetailForCartItem?.Rolllength,
-                    });
-                }
+                        var cartItem = cartItemsUpdate.CartItems.FirstOrDefault(x => x.ItemID == product.ID);
+                        if (cartItem != null)
+                        {
+                            var cartItemQuantity = cartItem.Quantity;
+                            var productPrice = product.Discount.HasValue && product.Discount.Value > 0 ? product.Discount.Value : product.Price;
+
+                            // Use the CalculateDiscountPrice method to calculate the discounted price
+                            var productDiscountDetails = product.ProductRecords.FirstOrDefault(x => x.LanguageID == AppDataHelper.CurrentLanguage.ID)?.ProductDiscountDetails;
+
+                            // Use the calculated discount price if it's not null, otherwise use the original product price
+                            var discountPrice = CalculateDiscount(productDiscountDetails, cartItemQuantity) ?? productPrice;
+
+                            // Add the updated cart item to the session
+                            SessionHelper.CartItems.Add(new CartItem()
+                            {
+                                ItemID = product.ID,
+                                Price = productPrice,
+                                DiscountPrice = discountPrice, // Set the DiscountPrice here
+                                Quantity = cartItemQuantity
+                            });
+                        }
+                    }
                 model.CartItems = SessionHelper.CartItems.OrderByDescending(x => x.ItemID).ToList();
                 model.ProductIDs = SessionHelper.CartItems.Select(x => x.ItemID).ToList();
-
-
             }
 
             if (!string.IsNullOrEmpty(cartItemsUpdate.PromoCode))

@@ -75,7 +75,8 @@
 
                         var discountDetails = currentLanguageProductRecord.ProductDiscountDetails;
                         var DiscountPrice = cartItem.CalculateDiscount;
-                       
+                        var DiscountInfo = currentLanguageProductRecord.ProductDiscountDetails.SingleOrDefault(x => x.ID == cartItem.ItemDiscountID);
+
 
 
                         var sanitizedSEOTitle = AppDataHelper.CurrentLanguage.ShortCode == LanguagesHelper.EnglishLanguageShortCode && currentLanguageProductRecord != null ? currentLanguageProductRecord.Name.SanitizeLowerString() : string.Empty;
@@ -93,8 +94,8 @@
                                 {
                                     if (DiscountPrice != null)
                                     {
-                                        <h6>@cartItem.Fullwidth/@cartItem.Centrefoldedwidth mm</h6>
-                                        <h6>@cartItem.Rolllength mtrs</h6>
+                                        <h6>@DiscountInfo.Fullwidth/@DiscountInfo.Centrefoldedwidth mm</h6>
+                                        <h6>@DiscountInfo.Rolllength mtrs</h6>
                                     }
                                 }
                             </a>
@@ -105,10 +106,46 @@
                         </td>
                         @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                         {
-                            <td class="p-price ltr-dir"> 
-                            
-                                    @cartItem.DiscountPrice.WithCurrency()
-                         
+                            <td class="p-price ltr-dir">
+                                <!-- commented this out as it shows strike through of product price but its not necessary-->
+                                @*<span>
+                @product.Price.WithCurrency()
+                </span>*@
+                                @if (cartItem.Quantity <= 5)
+                                {
+                                    if (DiscountInfo != null)
+                                    {
+                                        @DiscountInfo.Priceperroll_1to5.WithCurrency()
+                                    }
+                                }
+                                else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
+                                {
+                                    if (DiscountInfo != null)
+                                    {
+                                        @DiscountInfo.Priceperroll_6to15.WithCurrency()
+                                    }
+                                }
+                                else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
+                                {
+                                    if (DiscountInfo != null)
+                                    {
+                                        @DiscountInfo.Priceperroll_16to23.WithCurrency()
+                                    }
+                                }
+                                else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
+                                {
+                                    if (DiscountInfo != null)
+                                    {
+                                        @DiscountInfo.Priceperroll_24to47.WithCurrency()
+                                    }
+                                }
+                                else if (cartItem.Quantity >= 48)
+                                {
+                                    if (DiscountInfo != null)
+                                    {
+                                        @DiscountInfo.Priceperroll_48.WithCurrency()
+                                    }
+                                }
                             </td>
                         }
                         else
@@ -146,9 +183,28 @@
                         @if (currentLanguageProductRecord.ProductDiscountDetails != null && currentLanguageProductRecord.ProductDiscountDetails.Count > 0)
                         {
                             <td class="total-price ltr-dir">
-                                @if (cartItem.DiscountPrice != null)
+                                @if (DiscountInfo != null)
                                 {
-                                    @((cartItem.DiscountPrice * cartItem.Quantity).ToString("C"))
+                                    if (cartItem.Quantity <= 5)
+                                    {
+                                        @((DiscountInfo.Priceperroll_1to5 *cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 6 && cartItem.Quantity <= 15)
+                                    {
+                                        @((DiscountInfo.Priceperroll_6to15 *cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 16 && cartItem.Quantity <= 23)
+                                    {
+                                        @((DiscountInfo.Priceperroll_16to23 * cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 24 && cartItem.Quantity <= 47)
+                                    {
+                                        @((DiscountInfo.Priceperroll_24to47*cartItem.Quantity).WithCurrency())
+                                    }
+                                    else if (cartItem.Quantity >= 48)
+                                    {
+                                        @((DiscountInfo.Priceperroll_48 * cartItem.Quantity).WithCurrency())
+                                    }
                                 }
                             </td>
                         }
